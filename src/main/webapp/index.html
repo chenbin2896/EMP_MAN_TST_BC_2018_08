@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>就业信息网</title>
+    <meta content="width=de vice-width,initial-scale=1,maximum-scale=1,user-scalable=no" name="viewport">
+    <link rel="stylesheet" href="plugins/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="plugins/adminLTE/css/AdminLTE.css">
+    <link rel="stylesheet" href="plugins/adminLTE/css/skins/_all-skins.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="plugins/jQuery/jquery-2.2.3.min.js"></script>
+    <script src="plugins/bootstrap/js/bootstrap.min.js"></script>
+
+    <script type="text/javascript" src="plugins/angularjs/angular.min.js">  </script>
+
+    <script>
+        var app=angular.module("axbt",[]);
+        /*app.config(['$locationProvider', function($locationProvider) {
+            $locationProvider.html5Mode({
+                enabled: true,
+                requireBase: false
+            });
+        }]);*/
+
+        app.controller('myctrl', function($scope,$http) {
+            //console.log($location.search().id);
+            $scope.findInfo = function () {
+                $http.get('/companyinfo/findAll').success(
+                    function (response) {
+                        $scope.list = response;
+                    }
+                );
+                $http.get('/information/findAll').success(
+                    function (response) {
+                        $scope.informationlist = response;
+                    }
+                )
+            }
+
+            $scope.findCompanyInfo = function (id) {
+                location.href='/page/companyInfos.html?id='+id;
+            }
+            $scope.findInformationInfo = function (id) {
+                location.href='/page/informationInfos.html?id='+id;
+            }
+
+        });
+    </script>
+</head>
+<body ng-app="axbt" ng-controller="myctrl" ng-init="findInfo()">
+    <div class="container-fluid">
+        <div class="row" style="background: #1b629c">
+            <div class="col-md-12" style="height: 120px;">
+
+                <img src="/img/logo.png" style="width: 300px;height: 60px;margin-top: 30px;float: left">
+                <h2 style="color: #f8fafc;line-height: 80px;">&emsp;|就业信息网</h2>
+            </div>
+        </div>
+        <div class="row" style="background: #2769A6">
+            <div class="col-md-10 col-md-offset-1" style="height: 45px;color: #ffffff;line-height: 45px;">
+                <div class="col-md-2 text-center" onmouseover="this.style.background='#74b4f9'" onmouseout="this.style.background='#2769A6'">
+                    <a href="#" onclick="location.href='/index.html'" style="color: #ffffff;">首页</a>
+                </div>
+                <div class="col-md-2 text-center" onmouseover="this.style.background='#74b4f9'" onmouseout="this.style.background='#2769A6'">
+                    <a href="#" onclick="location.href='/page/companyinfo.html'" style="color: #ffffff;">招聘信息</a>
+                </div>
+                <div class="col-md-2 text-center" onmouseover="this.style.background='#74b4f9'" onmouseout="this.style.background='#2769A6'">
+                    <a href="#" onclick="location.href='/page/graduateinfo.html'" style="color: #ffffff;">毕业生信息</a>
+                </div>
+                <div class="col-md-2 text-center" onmouseover="this.style.background='#74b4f9'" onmouseout="this.style.background='#2769A6'">
+                    <a href="#" onclick="location.href='/page/searchcompanyinfo.html'" style="color: #ffffff;">信息查询</a>
+                </div>
+                <!--<div class="col-md-2 text-center" onmouseover="this.style.background='#74b4f9'" onmouseout="this.style.background='#2769A6'">
+                    <a href="#" style="color: #ffffff;">统计分析</a>
+                </div>-->
+                <div class="col-md-2 text-center" onmouseover="this.style.background='#74b4f9'" onmouseout="this.style.background='#2769A6'">
+                    <a href="#" onclick="location.href='/login.html'" style="color: #ffffff;">管理员登录</a>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+<div class="container-fluid">
+    <div style="width: 1200px;margin: 20px auto">
+        <div style="width: 882px;float: left;border: 1px #e5e5e5 solid;">
+            <!--循环开始-->
+            <div style="width: 440px;float: left;height: 85px;overflow:hidden;line-height: 20px;border-bottom: 1px #e5e5e5 dashed" ng-repeat="entity in list">
+                <div style="float: left;">
+                    <span style="width: 40px;height: 20px;text-align:center;border-radius:5px;margin-top:20px;margin-left:10px;display:inline-block;background: #479cee;color: #ffffff;">置顶</span>
+                </div>
+                <div style="float: left;padding: 5px 10px">
+                    <a ng-click="findCompanyInfo(entity.id)" href="#">
+                    <span style="width: 297px;display: block;height: 20px;overflow:hidden;font-size: 16px;color: #333333;line-height: 20px;">{{entity.name}}</span>
+                    <span style="width: 297px;display: block;height: 30px;line-height:40px;overflow:hidden;font-size: 13px;color: #858585;">{{entity.info}}</span>
+                    </a>
+                </div>
+                <div style="width: 55px;height: 47px;text-align:center;float: left;margin-top: 15px;border: 1px #e5e5e5 solid;">
+                    <span style="width: 100%;display:block;font-size: 14px;color: #ffffff;line-height: 20px;background: #479cee">2018</span>
+                    <span style="width: 100%;display:block;font-size: 14px;color: #000000;line-height: 27px;">09-09</span><br>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!--右边就业指导栏-->
+        <div style="width: 281px;float: right;border: 1px #e5e5e5 solid;">
+            <div style="width: 280px;height: 40px;line-height: 40px;border-bottom: 1px #e5e5e5 solid">
+                <span style="padding-left: 10px;font-weight: bold;">就业指导</span>
+            </div>
+            <!--循环开始-->
+            <div style="width: 280px;height: 50px;line-height: 20px;border-bottom: 1px #e5e5e5 solid;overflow: hidden" ng-repeat="information in informationlist">
+                <a href="#" ng-click="findInformationInfo(information.id)">
+                <div style="width: 218px;float: left;margin-top:5px;font-size:13px;color: #858585;padding-left: 10px;padding-right:10px;overflow:hidden">{{information.title}}</div>
+                <div style="width: 60px;padding-right:10px;line-height:35px;float: right;overflow: hidden">{{information.publishDate|date:'MM-dd'}}</div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row" style="margin-top: 15px;margin-bottom: 10px;text-align: center;">
+        <div class="col-md-12" style="color: #626262;line-height: 20px;font-size: 16px;">
+            版权所有@太原科技大学就业信息网
+        </div>
+    </div>
+</div>
+</body>
+</html>

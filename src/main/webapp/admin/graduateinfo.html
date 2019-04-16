@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>毕业生信息管理</title>
+    <meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" name="viewport">
+    <link rel="stylesheet" href="../plugins/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../plugins/adminLTE/css/AdminLTE.css">
+    <link rel="stylesheet" href="../plugins/adminLTE/css/skins/_all-skins.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <script src="../plugins/jQuery/jquery-2.2.3.min.js"></script>
+    <script src="../plugins/bootstrap/js/bootstrap.min.js"></script>
+
+    <script type="text/javascript" src="../plugins/angularjs/angular.min.js"></script>
+    <!-- 分页组件开始 -->
+    <script src="../plugins/angularjs/pagination.js"></script>
+    <link rel="stylesheet" href="../plugins/angularjs/pagination.css">
+    <!-- 分页组件结束 -->
+
+
+    <script type="text/javascript" src="../js/base_pagination.js"></script>
+    <script type="text/javascript" src="../js/service/graduateinfoService.js"></script>
+    <script type="text/javascript" src="../js/controller/baseController.js"></script>
+    <script type="text/javascript" src="../js/controller/graduateinfoController.js"></script>
+
+</head>
+<body class="hold-transition skin-red sidebar-mini" ng-app="axbt" ng-controller="graduateinfoController">
+<!-- .box-body -->
+<div class="box-header with-border">
+    <h3 class="box-title">毕业生信息管理</h3>
+</div>
+
+<div class="box-body">
+
+    <!-- 数据表格 -->
+    <div class="table-box">
+
+        <!--工具栏-->
+        <div class="pull-left">
+            <div class="form-group form-inline">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default" title="新建" data-toggle="modal"
+                            data-target="#editModal" ng-click="entity={}"><i class="fa fa-file-o"></i> 新建
+                    </button>
+                    <button type="button" class="btn btn-default" title="删除" ng-click="dele()"><i
+                            class="fa fa-trash-o"></i> 删除
+                    </button>
+                    <button type="button" class="btn btn-default" title="刷新" onclick="window.location.reload();"><i
+                            class="fa fa-refresh"></i> 刷新
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="pull-right">
+            <div class="form-group form-inline">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default" onclick="location.href='companyinfo.html'"
+                    ><i class="fa fa-file-o"></i> 单位信息
+                    </button>
+                    <button type="button" class="btn btn-default" onclick="location.href='graduateinfo.html'" ><i
+                            class="fa fa-trash-o"></i> 毕业生信息
+                    </button>
+                    <button type="button" class="btn btn-default" onclick="location.href='information.html'"><i
+                            class="fa fa-refresh"></i> 就业信息
+                    </button>
+                    <button type="button" class="btn btn-default" onclick="location.href='boothinfo.html'" ><i
+                            class="fa fa-trash-o"></i> 招聘会信息
+                    </button>
+                    <button type="button" class="btn btn-default" onclick="location.href='boothallocation.html'"><i
+                            class="fa fa-refresh"></i> 摊位分配
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="box-tools pull-right">
+            <div class="has-feedback">
+                姓名：<input type="text" ng-model="searchEntity.name">
+                专业：<input type="text" ng-model="searchEntity.major">
+                生源地：<input type="text" ng-model="searchEntity.origin">
+                <input type="button" class="btn btn-default " ng-click="reloadList()" value="查询">
+            </div>
+        </div>
+        <!--工具栏/-->
+
+        <!--数据列表-->
+        <table id="dataList" class="table table-bordered table-striped table-hover dataTable">
+            <thead>
+            <tr>
+                <th class="" style="padding-right:0px">
+                    <input id="selall" type="checkbox" class="icheckbox_square-blue">
+                </th>
+                <th class="sorting">序号</th>
+                <th class="sorting">姓名</th>
+                <th class="sorting">年龄</th>
+                <th class="sorting">性别</th>
+                <th class="sorting">出生日期</th>
+                <th class="sorting">民族</th>
+                <th class="sorting">政治面貌</th>
+                <th class="sorting">专业</th>
+                <th class="sorting">院系名称</th>
+                <!--<th class="sorting">学历</th>
+                <th class="sorting">学制</th>
+                <th class="sorting">培养方式</th>
+                <th class="sorting">生源地</th>
+                <th class="sorting">毕业时间</th>
+                <th class="sorting">求职意向</th>
+                <th class="sorting">外语语种</th>
+                <th class="sorting">外语水平</th>
+                <th class="sorting">电脑水平</th>
+                <th class="sorting">曾任职务</th>
+                <th class="sorting">联系电话</th>
+                <th class="sorting">邮箱</th>
+                <th class="sorting">联系地址</th>
+                <th class="sorting">工作经历</th>
+                <th class="sorting">自荐信</th>-->
+
+                <th class="text-center">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="entity in list">
+                <td><input type="checkbox" ng-click="updateSelection($event,entity.id)"></td>
+                <td>{{entity.id}}</td>
+                <td>{{entity.name}}</td>
+                <td>{{entity.age}}</td>
+                <td>{{entity.sex}}</td>
+                <td>{{entity.birth|date:'yyyy-MM-dd'}}</td>
+                <td>{{entity.nation}}</td>
+                <td>{{entity.politicStatus}}</td>
+                <td>{{entity.major}}</td>
+                <td>{{entity.depart}}</td>
+                <!--<td>{{entity.educationBack}}</td>
+                <td>{{entity.educationLength}}</td>
+                <td>{{entity.traiiningMode}}</td>
+                <td>{{entity.origin}}</td>
+                <td>{{entity.graduationTime}}</td>
+                <td>{{entity.jobIntension}}</td>
+                <td>{{entity.languages}}</td>
+                <td>{{entity.languaageLevel}}</td>
+                <td>{{entity.computerLevel}}</td>
+                <td>{{entity.post}}</td>
+                <td>{{entity.phone}}</td>
+                <td>{{entity.email}}</td>
+                <td>{{entity.address}}</td>
+                <td>{{entity.experience}}</td>
+                <td>{{entity.message}}</td>-->
+
+                <td class="text-center">
+                    <button type="button" class="btn bg-olive btn-xs" data-toggle="modal" data-target="#editModal"
+                            ng-click="findOne(entity.id)">修改
+                    </button>
+                    <!--<button type="button" class="btn bg-olive btn-xs"
+                            ng-click="findInfo(entity.id)">查看简历
+                    </button>-->
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <!--数据列表/-->
+    </div>
+    <!-- 数据表格 /-->
+    <!-- 分页 -->
+    <tm-pagination conf="paginationConf"></tm-pagination>
+</div>
+<!-- /.box-body -->
+
+<!-- 编辑窗口 -->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h3 id="myModalLabel">编辑</h3>
+            </div>
+            <div class="modal-body">
+                <table class="table table-bordered table-striped" width="800px">
+                    <tr>
+
+                        <td>姓名</td>
+
+                        <td><input class="form-control" ng-model="entity.name" placeholder="姓名"></td>
+
+                    </tr>
+                    <tr>
+
+                        <td>年龄</td>
+
+                        <td><input class="form-control" ng-model="entity.age" placeholder="年龄"></td>
+
+                    </tr>
+                    <tr>
+
+                        <td>性别</td>
+
+                        <td><input class="form-control" ng-model="entity.sex" placeholder="性别"></td>
+
+                    </tr>
+                    <tr>
+
+                        <td>出生日期</td>
+
+                        <td><input class="form-control" ng-model="entity.birth" placeholder="出生日期"></td>
+
+                    </tr>
+                    <tr>
+
+                        <td>民族</td>
+
+                        <td><input class="form-control" ng-model="entity.nation" placeholder="民族"></td>
+
+                    </tr>
+                    <tr>
+
+                        <td>政治面貌</td>
+
+                        <td><input class="form-control" ng-model="entity.politicStatus" placeholder="政治面貌"></td>
+
+                    </tr>
+                    <tr>
+
+                        <td>专业</td>
+
+                        <td><input class="form-control" ng-model="entity.major" placeholder="专业"></td>
+
+                    </tr>
+                    <tr>
+
+                        <td>院系名称</td>
+
+                        <td><input class="form-control" ng-model="entity.depart" placeholder="院系名称"></td>
+
+                    </tr>
+                    <tr>
+
+                        <td>学历</td>
+
+                        <td><input class="form-control" ng-model="entity.educationBack" placeholder="学历"></td>
+
+                    </tr>
+                    <tr>
+
+                        <td>学制</td>
+
+                        <td><input class="form-control" ng-model="entity.educationLength" placeholder="学制"></td>
+
+                    </tr>
+                    <tr>
+
+                        <td>培养方式</td>
+
+                        <td><input class="form-control" ng-model="entity.traiiningMode" placeholder="培养方式"></td>
+
+                    </tr>
+                    <tr>
+
+                        <td>生源地</td>
+
+                        <td><input class="form-control" ng-model="entity.origin" placeholder="生源地"></td>
+
+                    </tr>
+                    <tr>
+
+                        <td>毕业时间</td>
+
+                        <td><input class="form-control" ng-model="entity.graduationTime" placeholder="毕业时间"></td>
+
+                    </tr>
+                    <tr>
+
+                        <td>求职意向</td>
+
+                        <td><input class="form-control" ng-model="entity.jobIntension" placeholder="求职意向"></td>
+
+                    </tr>
+                    <tr>
+
+                        <td>外语语种</td>
+
+                        <td><input class="form-control" ng-model="entity.languages" placeholder="外语语种"></td>
+
+                    </tr>
+                    <tr>
+
+                        <td>外语水平</td>
+
+                        <td><input class="form-control" ng-model="entity.languaageLevel" placeholder="外语水平"></td>
+
+                    </tr>
+                    <tr>
+
+                        <td>电脑水平</td>
+
+                        <td><input class="form-control" ng-model="entity.computerLevel" placeholder="电脑水平"></td>
+
+                    </tr>
+                    <tr>
+
+                        <td>曾任职务</td>
+
+                        <td><input class="form-control" ng-model="entity.post" placeholder="曾任职务"></td>
+
+                    </tr>
+                    <tr>
+
+                        <td>联系电话</td>
+
+                        <td><input class="form-control" ng-model="entity.phone" placeholder="联系电话"></td>
+
+                    </tr>
+                    <tr>
+
+                        <td>邮箱</td>
+
+                        <td><input class="form-control" ng-model="entity.email" placeholder="邮箱"></td>
+
+                    </tr>
+                    <tr>
+
+                        <td>联系地址</td>
+
+                        <td><input class="form-control" ng-model="entity.address" placeholder="联系地址"></td>
+
+                    </tr>
+                    <tr>
+
+                        <td>工作经历</td>
+
+                        <td><input class="form-control" ng-model="entity.experience" placeholder="工作经历"></td>
+
+                    </tr>
+                    <tr>
+
+                        <td>自荐信</td>
+
+                        <td><input class="form-control" ng-model="entity.message" placeholder="自荐信"></td>
+
+                    </tr>
+
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-success" data-dismiss="modal" aria-hidden="true" ng-click="save()">保存</button>
+                <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

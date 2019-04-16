@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>简历信息</title>
+
+    <meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" name="viewport">
+    <link rel="stylesheet" href="../plugins/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../plugins/adminLTE/css/AdminLTE.css">
+    <link rel="stylesheet" href="../plugins/adminLTE/css/skins/_all-skins.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <script src="../plugins/jQuery/jquery-2.2.3.min.js"></script>
+    <script src="../plugins/bootstrap/js/bootstrap.min.js"></script>
+
+    <script type="text/javascript" src="../plugins/angularjs/angular.min.js"></script>
+    <script>
+        var app=angular.module("axbt",[]);
+        app.config(['$locationProvider', function($locationProvider) {
+            $locationProvider.html5Mode({
+                enabled: true,
+                requireBase: false
+            });
+        }]);
+
+        app.controller('myctrl', function($scope,$http, $location) {
+            //console.log($location.search().id);
+            $scope.findInfo = function () {
+                var id = $location.search().id;
+                $http.get('/graduateinfo/findOne?id='+id).success(
+                    function (response) {
+                        $scope.entity = response;
+                    }
+                )
+            }
+        });
+    </script>
+
+</head>
+<body ng-app="axbt" ng-controller="myctrl" ng-init="findInfo()">
+<div class="container-fluid">
+    <div class="row" style="padding-left: 20px;padding-right: 20px;">
+        <div class="col-md-10 col-md-offset-2" style="padding-bottom:100px;border: 1px #e5e5e5 solid;">
+            <h2 >个人简历</h2>
+            <h3>基本资料</h3>
+            <div class="row">
+                <div class="col-md-6">姓名：{{entity.name}}</div>
+                <div class="col-md-6">性别：{{entity.sex}}</div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">年龄：{{entity.age}}</div>
+                <div class="col-md-6">出生日期：{{entity.birth}}</div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">民族：{{entity.nation}}</div>
+                <div class="col-md-6">政治面貌：{{entity.politicStatus}}</div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">专业：{{entity.major}}</div>
+                <div class="col-md-6">院系：{{entity.depart}}</div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">联系方式：{{entity.phone}}</div>
+                <div class="col-md-6">邮箱：{{entity.email}}</div>
+            </div>
+            <h3>职业技能</h3>
+            <div class="row">
+                <div class="col-md-6">学历：{{entity.educationBack}}</div>
+                <div class="col-md-6">学制：{{entity.educationLength}}</div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">培养模式：{{entity.traiiningMode}}</div>
+                <div class="col-md-6">生源地：{{entity.origin}}</div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">毕业时间：{{entity.graduationTime}}</div>
+                <div class="col-md-6">外语语种：{{entity.languages}}</div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">外语水平：{{entity.languaageLevel}}</div>
+                <div class="col-md-6">电脑水平：{{entity.computerLevel}}</div>
+            </div>
+            <h3>工作经历</h3>
+            <div class="row">
+                <div class="col-md-6">{{entity.post}}</div>
+
+            </div>
+            <h3>自荐信</h3>
+            <div class="row">
+                <div class="col-md-10">{{entity.message}}</div>
+
+            </div>
+            <h3>求职意向</h3>
+            <div class="row">
+                <div class="col-md-6">
+                    {{entity.jobIntension}}
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
